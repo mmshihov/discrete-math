@@ -1,0 +1,905 @@
+%include part: see main.beamer.tex and main.article.tex
+%include common packages and settings
+\input{./../common}
+
+
+\title[Системы счисления]{Позиционные системы счисления}
+
+
+\begin{document}
+
+%титул и содержание статьи
+\mode<article>{\maketitle\tableofcontents}
+
+%титул и содержание презентации
+\frame<presentation>{\titlepage}
+\begin{frame}<presentation>
+    \frametitle{Содержание}
+    \tableofcontents
+\end{frame}
+
+
+\section{Символьное представление чисел}
+
+
+\subsection{Римская система счисления}
+
+\begin{frame}
+    \frametitle{Римская система счисления}
+    
+    \begin{block}{}
+        \begin{center}
+            \begin{tabular}{lll}
+                \hline\hline
+                    1       &I   &лат. unus\\
+                    5       &V   &лат. quinque\\
+                    10      &X   &лат. decem\\
+                    50      &L   &лат. quinquaginta\\
+                    100     &C   &лат. centum\\
+                    500     &D   &лат. quingenti\\
+                    1000    &M   &лат. mille\\
+                \hline\hline
+            \end{tabular}
+        \end{center}
+    \end{block}
+    \begin{itemize}
+        \item II --- 2;
+        \item IV --- 4;
+        \item VI --- 6;
+        \item XCIX --- 99;
+        \item MMMCMXCIX --- 3999\ldots и это \alert{предел}!
+    \end{itemize}
+\end{frame}
+
+
+\subsection{Позиционная система счисления}
+
+
+\begin{frame}
+    \frametitle{Натуральное число}
+    \framesubtitle{В позиционной системе счисления с основанием $K$}
+
+    Представление числа в $K$-ичной системе счисления:
+    \[
+        (a_{n-1}\cdots a_{1}a_{0})_K,
+    \]
+    
+    Число, соответствующее представлению \footnote{Замкнутая запись суммы:\[\sum_{i=1}^{n}x_i = x_1 + x_2 + \ldots + x_n\]}:
+    \[
+        \sum_{i=0}^{n-1}a_i\cdot K^{i}.
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Вклад разряда}
+
+    Каким бы большим не было натуральное число, рано или поздно все цифры в разрядах старше некоторого $(n-1)$-го будут нулевыми:
+    \[
+        (\cdots 0000000a_{n-1}\cdots a_{1}a_{0})_K,
+    \]
+    где $a_{n-1}\neq 0$. Поэтому бесконечный ряд нулей слева в записи числа опускают.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Вклад $n$-го разряда}
+    
+    Вклад $n$-го разряда при $a_n\neq 0$ больше вклада младших\footnote{$100>99$, $1000>999$,\ldots}:
+    \[
+        a_n\cdot K^n \geq 1+\sum_{i=0}^{n-1}a_i\cdot K^i.
+    \]
+
+    Рано или поздно для сколь угодно большого числа:
+    \[
+        (\cdots 0000000a_{n-1}\cdots a_{1}a_{0})_K,
+    \]
+    где $a_{n-1}\neq 0$.
+\end{frame}
+
+\begin{frame}
+    \begin{example}[Число в десятичной СС]
+        Записи $(78642)_{10}$ (большинство запишет просто \textbf{78642}) соответствует число
+        \[
+            7\cdot 10^{4}+
+            8\cdot 10^{3}+
+            6\cdot 10^{2}+
+            4\cdot 10^{1}+
+            2\cdot 10^{0}=78642.
+        \]
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \begin{example}[Число в двоичной СС]
+        Записи $(10101)_{2}$  соответствует число
+        \[
+            \begin{array}[c]{c}
+                1\cdot 2^{4}+
+                0\cdot 2^{3}+
+                1\cdot 2^{2}+
+                0\cdot 2^{1}+
+                1\cdot 2^{0} = \\
+                =1\cdot 16+
+                0\cdot 8+
+                1\cdot 4+
+                0\cdot 2+
+                1\cdot 1 = \\
+                = 21.
+            \end{array}
+        \]
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \begin{example}[Число в троичной СС]
+        Записи $(10221)_{3}$  соответствует число
+        \[
+            \begin{array}[c]{c}
+                1\cdot 3^{4}+
+                0\cdot 3^{3}+
+                2\cdot 3^{2}+
+                2\cdot 3^{1}+
+                1\cdot 3^{0} = \\
+                =1\cdot 81+
+                0\cdot 27+
+                2\cdot 9+
+                2\cdot 3+
+                1\cdot 1 = \\
+                = 106.
+            \end{array}
+        \]
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \begin{example}[Символ цифры]
+        В ручной записи \emph{числа} каждой \emph{цифре} соответствует \emph{символ} определенного начертания. Поэтому, если оговорено, например, что $K=3$ и цифре
+        $\alpha$ соответствует ноль, $\beta$ --- один, $\gamma$ --- два, то записи 
+        \[
+            (\beta\alpha\gamma\gamma\beta)_3
+        \]
+        соответствует число $106$. 
+    \end{example}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Вещественное число}
+    \framesubtitle{Дробная часть $Y$, $0\leq Y < 1$}
+    
+    В позиционной системе счисления с основанием $K$ представляется так:
+    \[
+        Y\equiv(.a_{-1}a_{-2}\cdots a_{-m}\cdots)_K,
+    \] где $m>0$ --- натуральное число.
+
+    Дробная на основе своего представления формируется так:
+    \[
+        Y=
+            \sum_{i=-m}^{-1}a_{i}\cdot K^{i}=
+            \sum_{i=1}^{m}\frac{a_{-i}}{K^{i}}.
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Иррациональные числа}
+    
+    Для записи иррациональных чисел, например таких, как число 
+    \[\pi=3.141592653589793238462643\cdots\] 
+    понадобится \emph{бесконечное} количество цифр для представления дробной части в позиционной системе счисления с \emph{любым} целым основанием.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Потеря точности}
+    
+    \begin{example}
+        $0.5 = (.1)_2$.
+        
+        $0.3 = (.0[1001])_2 \approx (.010011001\cdots)_2$.
+    \end{example}
+    
+    Число, представимое в одной позиционной СС точно, в ПСС с другим основанием может быть представлено только периодической дробью, а на практике лишь приближённо\ldots
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Вклад $m$-го разряда}
+    \framesubtitle{$a_{-m}\neq 0$}
+    
+    Вклад $m$-го разряда дробной части при $a_{-m}\neq 0$ больше вклада младших\footnote{$0.1>0.099999\cdots$}:
+    \[
+        a_{-m}\cdot K^{-m}>\sum_{i=m+1}^{\infty}\frac{a_{-i}}{k^i}.
+    \]
+\end{frame}
+
+\begin{frame}
+    \begin{example}[Дробная часть в двоичной СС]
+        Записи дробной части $(.10111)_{2}$  соответствует число $Y$:
+        \[
+            \begin{array}[c]{c}
+                Y=
+                1\cdot 2^{-1}+
+                0\cdot 2^{-2}+
+                1\cdot 2^{-3}+
+                1\cdot 2^{-4}+
+                1\cdot 2^{-5} = \\
+                =
+                1\cdot 0.5+
+                0\cdot 0.25+
+                1\cdot 0.125+
+                1\cdot 0.0625+
+                1\cdot 0.03125 = \\
+                = 0.71875
+            \end{array}
+        \]
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Представление вещественного числа}
+    
+    Число
+    \[
+        X=
+        \sum_{i=-m}^{-1}a_i\cdot K^{i} + \sum_{j=0}^{n-1}a_j\cdot K^{j}=
+        \sum_{i=-m}^{n-1}a_i\cdot K^{i}.
+    \]
+    можно представить как
+    \[
+        X\equiv(a_{n-1}\cdots a_{1}a_{0}\fbox{.}a_{-1}a_{-2}\cdots a_{-m+1}a_{-m})_K.
+    \]
+    Записи отрицательного числа будет предшествовать знак минус:
+    \[
+        X\equiv(-a_{n-1}\cdots a_{2}a_{1}a_{0}.a_{-1}a_{-2}\cdots a_{-m+1}a_{-m})_K.
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Обсуждение}
+    
+    Как представить число в физической среде?
+\end{frame}
+
+
+\section{Перевод чисел из одной системы счисления в другую}
+
+\begin{frame}
+    \frametitle{Перевод чисел}
+    \framesubtitle{Условия}
+    
+    Необходимо число, представленное в $L$-ичной СС, представить в $K$-ичной СС:
+    \begin{itemize}
+        \item $A\equiv(\pm\cdots a_1a_0.a_{-1}a_{-2}\cdots)_L$;
+        \item $A\to B$;
+        \item $B\equiv(\pm\cdots b_1b_0.b_{-1}b_{-2}\cdots)_K$;
+        \item Вычислитель считает в $M$-ичной СС.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Перевод числа в систему счисления вычислителя}
+    \framesubtitle{Люди привыкли считать в десятичной}
+    
+    Исходное число
+    \[
+        A\equiv(\pm a_{n}\cdots a_{0}.a_{-1}\cdots a_{-m})_L
+    \]
+    достаточно пересчитать в СС вычислителя
+    \[
+        A=\pm\sum_{i=-m}^{n}a_i\cdot L^{i},
+    \]
+    представив\footnote{Не представляет сложности} в ней же $L$ и $a_i$.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Число в $16$-ичной СС}
+    \framesubtitle{Данный слайд создан вычислителем, которому удобно считать в десятичной системе}
+    
+    \begin{block}{}
+        Пусть дано число $Z\equiv(-7AFC.4)_{16}$.
+
+         В шестнадцатиричной системе счисления цифры обозначены следующим образом: цифрам от нуля до девяти соответствуют цифры десятичной системы, а далее используются латинские буквы от $A$ до $F$ в алфавитном порядке, которым соответствуют числа от 10 до 15 соответственно:
+        \[
+            \begin{array}[c]{c}
+                Z=-(
+                7\cdot 16^{3}+
+                A\cdot 16^{2}+
+                F\cdot 16^{1}+
+                C\cdot 16^{0}+
+                4\cdot 16^{-1})=\\
+                =-(
+                7\cdot 16^{3}+
+                10\cdot 16^{2}+
+                15\cdot 16^{1}+
+                12\cdot 16^{0}+
+                4\cdot 16^{-1})=\\
+                =
+                -(7\cdot 4096+
+                10\cdot 256+
+                15\cdot 16+
+                12\cdot 1+
+                4\cdot 0.0625)=\\
+                = -31484.25
+            \end{array}
+        \]    
+    \end{block}
+\end{frame}
+
+
+\subsection{Перевод целой части}
+
+\begin{frame}
+    \frametitle{Перевод в $K$-ичную СС}
+    \framesubtitle{Целая часть}
+    
+    Допустим, что целая часть ($X$) уже представлена в $K$-ичной системе: $X\equiv(b_n\cdots b_0)_K$. $X$ делится нацело на основание $K$:
+    \[
+        X=K\cdot\left(\sum_{i=1}^{n}b_i\cdot K^{i-1}\right)+b_{0},
+    \]
+    получая в остатке $b_{0}\in[0,K-1]$.
+    
+    \[
+        X=K\cdot X^{(1)} + b_{0}.
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Перевод в $K$-ичную СС}
+    \framesubtitle{Целая часть}
+
+    \[
+        \begin{array}[c]{l}
+            \displaystyle
+            X^{(1)}=K\cdot\left(\sum_{i=2}^{n}b_i\cdot K^{i-2}\right)+b_{1} = K\cdot X^{(2)}+b_{1},\\
+            \displaystyle
+            X^{(2)}=K\cdot X^{(3)}+b_{2},\\
+            \displaystyle
+            X^{(3)}=K\cdot X^{(4)}+b_{3},\\
+            \displaystyle
+            \cdots \\
+            \displaystyle
+            X^{(n)}=K\cdot 0 + b_{n}.
+        \end{array}
+    \]
+\end{frame}
+
+
+\subsection{Перевод дробной части}
+
+\begin{frame}
+    \frametitle{Перевод в $K$-ичную СС}
+    \framesubtitle{Дробная часть $Y$, $0\leq Y < 1$}
+    
+    Представим, что дробная часть ($Y$) числа уже представлена в $K$-ичной системе: $(.b_{-1}\cdots b_{-m})_K$. Умножая дробную часть на $K$.
+    \[
+        Y\cdot K = 
+            K\cdot \left(\sum_{i=-m}^{-1}b_i\cdot K^{i} \right)=
+                b_{-1} + \sum_{i=-m}^{-2}b_i\cdot K^{i+1},
+    \]
+    находим $b_{-1}=\lfloor Y\cdot K\rfloor$ и справедливо $b_{-1}\in[0,K-1]$.
+    
+    \[Y\cdot K = b_{-1} + Y^{(1)}.\]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Перевод в $K$-ичную СС}
+    \framesubtitle{Дробная часть}
+    
+    \[
+        \begin{array}[c]{l}
+            \displaystyle
+            Y^{(1)}\cdot K = \left(\sum_{i=-m}^{-2}b_i\cdot K^{i+1} \right)\cdot K=
+                b_{-2} + Y^{(2)},\\
+            \displaystyle
+            Y^{(2)}\cdot K = b_{-3} + Y^{(3)},\\
+            \displaystyle
+            Y^{(3)}\cdot K = b_{-4} + Y^{(4)},\\
+            \cdots \\
+            \displaystyle
+            Y^{(m-1)}\cdot K = \left(\sum_{i=-m}^{-m}b_i\cdot K^{i+m-1} \right)\cdot K=
+                b_{-m} + 0.
+        \end{array}
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Перевод чисел}
+    \framesubtitle{Точность представления дробной части $(Y)_L\to(Y)_K$.}
+    
+    \[(.a_{-1}\cdots a_{-m_L})_L\approx(.b_{-1}\cdots b_{-m_K})_K.\]
+    
+    Сколько разрядов $m_K$ необходимо?
+    \[
+        \begin{array}{ccc}
+            \Delta_{K}      &\leq& \Delta_{L},\\
+            K^{-m_K}        &\leq& L^{-m_L},\\
+            \log_K K^{-m_K} &\leq& \log_K L^{-m_L},\\
+            -m_K            &\leq& -m_L\cdot\log_K L,\\
+        \end{array}
+    \]
+    
+    \alert{$m_k \geq m_L\cdot\log_K L$}.
+\end{frame}
+
+\begin{frame}
+    \frametitle{$X\equiv-31484.25$ в $3$-ичную СС}
+    \framesubtitle{Целая часть}
+    
+    \[
+        \begin{array}[c]{ll}
+            31484=10494\cdot 3 + 2, &\Rightarrow b_{0}=2, \\
+            10494=3498\cdot 3 + 0,  &\Rightarrow b_{1}=0, \\
+            3498=1166\cdot 3 + 0,   &\Rightarrow b_{2}=0, \\
+            1166=388\cdot 3 + 2,    &\Rightarrow b_{3}=2, \\
+            388=129\cdot 3 + 1,     &\Rightarrow b_{4}=1, \\
+            129=43\cdot 3 + 0,      &\Rightarrow b_{5}=0, \\
+            43=14\cdot 3 + 1,       &\Rightarrow b_{6}=1, \\
+            14=4\cdot 3 + 2,        &\Rightarrow b_{7}=2, \\
+            4=1\cdot 3 + 1,         &\Rightarrow b_{8}=1, \\
+            1=0\cdot 3 + 1,         &\Rightarrow b_{9}=1
+        \end{array}
+    \]
+    $31484\equiv(1121012002)_3$.
+\end{frame}
+
+\begin{frame}
+    \frametitle{$X\equiv-31484.25$ в $3$-ичную СС}
+    \framesubtitle{Дробная часть}
+    
+    \[
+        \begin{array}[c]{ll}
+            0.25\cdot 3=0.75,   &\Rightarrow b_{-1}=0, \\
+            0.75\cdot 3=2.25,   &\Rightarrow b_{-2}=2, \\
+            0.25\cdot 3=0.75,   &\Rightarrow b_{-3}=0, \\
+            0.75\cdot 3=2.25,   &\Rightarrow b_{-4}=2, \\
+            \cdots
+        \end{array}
+    \]
+    
+    $0.25\equiv (0.[02])_3$.
+\end{frame}    
+
+\begin{frame}
+    \frametitle{$X\equiv(-7AFC.4)_{16}\equiv-31484.25$ в $3$-ичную СС}
+
+    \[X\equiv(-7AFC.4)_{16}\equiv -31484.25 \equiv (-1121012002.[02])_3\]
+\end{frame}    
+
+
+\section{Двоичная система счисления и пр.}
+
+
+\subsection{Двоичная система счисления}
+
+\begin{frame}
+    \frametitle{Двоичная система счисления}
+    
+    \begin{itemize}
+        \item Система счисления с основанием $2$. 
+        \item Цифры всего две: $0$ и $1$. 
+        \item Разряд $\equiv$ бит\footnote{bit --- \alert{b}inary dig\alert{it}. Двоичная цифра.}.
+    \end{itemize}
+    \[
+        \begin{tabular}{ll|ll}
+            \hline\hline
+            10\text{-я CC} 
+                & 2\text{-я CC}
+                        & 10\text{-я CC} 
+                            & 2\text{-я CC}\\
+            \hline\hline
+            0   &0000   &8  &1000\\
+            1   &0001   &9  &1001\\
+            2   &0010   &10 &1010\\
+            3   &0011   &11 &1011\\
+            4   &0100   &12 &1100\\
+            5   &0101   &13 &1101\\
+            6   &0110   &14 &1110\\
+            7   &0111   &15 &1111\\
+            \hline
+        \end{tabular}
+    \]
+\end{frame}
+
+Перевод в двоичную систему счисления или из неё не имеет никаких особенностей и полностью соответствует приведённому выше для любой позиционной системы.
+
+\begin{frame}
+    \frametitle{Двоичная система счисления}
+    \framesubtitle{Таблица сложения}
+    
+    \[
+        \begin{array}[c]{c|c|c|}
+            + & 0 & 1 \\
+            \hline
+            0 & \xleftarrow{0}0 & \xleftarrow{0}1\\
+            \hline
+            1 & \xleftarrow{0}1 & \xleftarrow{1}0 \\
+            \hline
+        \end{array}
+    \]
+    
+    Например, $1+1=2 \equiv (10)_2 \equiv \xleftarrow{1}0$.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Двоичная система счисления}
+    \framesubtitle{Сложение чисел}
+    
+    \begin{example}[Задача]
+        Сложить двоичные числа:
+        $A\equiv(101.1101)_2$ и
+        $B\equiv(11.010111)_2$.
+    \end{example}
+    \begin{proof}[Решение]
+    \[
+        {\entrymodifiers={}
+            {\xymatrix@=1pc{
+                A&\equiv
+                    & &1&0&1&.&1&1&0&1&0&0\\
+                B&\equiv
+                    & &0&1&1&.&0&1&0&1&1&1\\
+                \xleftarrow{c}
+                 &  &_1&_1&_1&_1& &_1& &_1& & & \\
+                A+B&\equiv
+                    &1
+                      &0\ar[ul]
+                        &0\ar[ul]
+                          &1\ar[ul]
+                            &.
+                              &0\ar[ull]
+                                &0\ar[ul]
+                                  &1
+                                    &0\ar[ul]
+                                      &1
+                                        &1
+            }}
+        }
+    \]
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Двоичная система счисления}
+    \framesubtitle{Закономерности}
+    
+    \begin{itemize}
+        \item В $n$ двоичных разрядах можно представить 
+        \[2^n\] 
+        чисел. $[0,2^n-1] \equiv [(\underbrace{0\cdots 0}_n)_2,(\underbrace{1\cdots 1}_n)_2]$
+        \item Чтобы пронумеровать $m$ объектов, требуется 
+        \[\lceil\log_2m\rceil\]
+        разрядное $2$-ичное число.
+    \end{itemize}
+\end{frame}
+
+    
+\subsection{Восьмиричная и шестнадцатиричная СС}
+
+\begin{frame}
+    \frametitle{Вспомогательные системы счисления}
+    \framesubtitle{$8,16$ СС}
+    
+    Системы счисления, основание которых есть степень двух: 
+    \begin{columns}
+        \column{.3\textwidth}
+        \begin{itemize}
+            \item $8=2^3$;
+            \item $16=2^4$.
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Восьмиричная СС}
+    \framesubtitle{
+        \(
+        X=(\pm\cdots\fbox{$a_8a_7a_6$}\fbox{$a_5a_4a_3$}\fbox{$a_2a_1a_0$}.
+        \fbox{$a_{-1}a_{-2}a_{-3}$}\fbox{$a_{-4}a_{-5}a_{-6}$}\fbox{$a_{-7}a_{-8}a_{-9}$}\cdots)_2
+        \)
+    }
+    
+    \[
+        X=
+            \begin{array}[c]{c}
+                \ldots+\\+
+                a_{8}\cdot 2^{8} +
+                a_{7}\cdot 2^{7} +
+                a_{6}\cdot 2^{6} +\\+
+
+                a_{5}\cdot 2^{5} +
+                a_{4}\cdot 2^{4} +
+                a_{3}\cdot 2^{3} +\\+
+
+                a_{2}\cdot 2^{2} +
+                a_{1}\cdot 2^{1} +
+                a_{0}\cdot 2^{0} +\\+
+
+                \frac {a_{-1}}{2^{1}} +
+                \frac {a_{-2}}{2^{2}} +
+                \frac {a_{-3}}{2^{3}} +\\+
+
+                \frac {a_{-4}}{2^{4}} +
+                \frac {a_{-5}}{2^{5}} +
+                \frac {a_{-6}}{2^{6}} +\\+
+
+                \frac {a_{-7}}{2^{7}} +
+                \frac {a_{-8}}{2^{8}} +
+                \frac {a_{-9}}{2^{9}} +\\
+
+                +\ldots
+        \end{array}
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Восьмиричная СС}
+    \framesubtitle{
+        \(
+        X=(\pm\cdots\fbox{$a_8a_7a_6$}\fbox{$a_5a_4a_3$}\fbox{$a_2a_1a_0$}.
+        \fbox{$a_{-1}a_{-2}a_{-3}$}\fbox{$a_{-4}a_{-5}a_{-6}$}\fbox{$a_{-7}a_{-8}a_{-9}$}\cdots)_2
+        \)
+    }
+
+    \[
+        X=
+        \begin{array}[c]{c}
+            \ldots+\\+
+            \left(
+            a_{8}\cdot 2^{2} +
+            a_{7}\cdot 2^{1} +
+            a_{6}\cdot 2^{0}\right)\cdot 8^{2} +\\+
+
+            \left(
+            a_{5}\cdot 2^{2} +
+            a_{4}\cdot 2^{1} +
+            a_{3}\cdot 2^{0}\right)\cdot 8^{1} +\\+
+
+            \left(
+            a_{2}\cdot 2^{2} +
+            a_{1}\cdot 2^{1} +
+            a_{0}\cdot 2^{0}\right)\cdot 8^{0} +\\+
+
+            \frac{\displaystyle
+            (a_{-1}\cdot 2^{2} +
+            a_{-2}\cdot 2^{1} +
+            a_{-3}\cdot 2^{0})
+            }{8^{1}} +\\+
+
+            \frac{\displaystyle
+            (a_{-4}\cdot 2^{2} +
+            a_{-5}\cdot 2^{1} +
+            a_{-6}\cdot 2^{0})
+            }{8^{2}} +\\+
+
+            \frac{\displaystyle
+            (a_{-7}\cdot 2^{1} +
+            a_{-8}\cdot 2^{2} +
+            a_{-9}\cdot 2^{3})
+            }{8^{3}} +\\
+
+            +\ldots
+        \end{array}
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Восьмиричная СС}
+    \framesubtitle{
+        \(
+        X=(\pm\cdots\fbox{$a_8a_7a_6$}\fbox{$a_5a_4a_3$}\fbox{$a_2a_1a_0$}.
+        \fbox{$a_{-1}a_{-2}a_{-3}$}\fbox{$a_{-4}a_{-5}a_{-6}$}\fbox{$a_{-7}a_{-8}a_{-9}$}\cdots)_2
+        \)
+    }
+    
+    Получили запись числа:
+    \[
+        X=\sum_{i=-m'}^{n'}b_{i}\cdot 8^{i},
+    \]
+    где 
+    \[
+        b_{i}=\sum_{j=0}^{2}a_{3\cdot i + j}\cdot 2^{j}
+    \]
+    и $b_i\in [0,2^{3}-1]$, те $b_i\in [0,7]$.
+    
+    $b_i$ --- \alert{восмиричная} цифра.
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Восьмиричные числа в языках программирования}
+    
+    \begin{itemize}
+        \item \verb"С++,java,C#" и т.д.: если справа перед числом записан ноль, то число в восьмиричной системе. \verb"015720" - восьмиричное число (равное 7120). \verb"0189" - ошибка: недопустимы цифры \verb"8" и \verb"9". Без ведущего нуля число считается десятичным;
+        
+        \item В ассемблере\footnote{masm} после цифр восьмиричного числа пишется латинская буква <<\verb"o">> (octal). \verb"15720o". Ну, а \verb"189o"\ldots
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Шестнадцатиричная система}
+
+    \[
+        X=(\pm\cdots\fbox{$a_7a_6a_5a_4$}\fbox{$a_3a_2a_1a_0$}.
+        \fbox{$a_{-1}a_{-2}a_{-3}a_{-4}$}\fbox{$a_{-5}a_{-6}a_{-7}a_{-8}$}\cdots)_2
+    \]
+
+    \[
+        \begin{tabular}{lll|lll}
+            \hline\hline
+            16\text{-я CC} 
+                &10\text{-я CC} 
+                        & 2\text{-я CC}
+                            & 16\text{-я CC} 
+                                & 10\text{-я CC} 
+                                    & 2\text{-я CC}\\
+            \hline\hline
+            0   &0  &0000   &8  &8  &1000\\
+            1   &1  &0001   &9  &9  &1001\\
+            2   &2  &0010   &A  &10 &1010\\
+            3   &3  &0011   &B  &11 &1011\\
+            4   &4  &0100   &C  &12 &1100\\
+            5   &5  &0101   &D  &13 &1101\\
+            6   &6  &0110   &E  &14 &1110\\
+            7   &7  &0111   &F  &15 &1111\\
+            \hline
+        \end{tabular}
+    \]
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Шестнадцатиричные числа в языках программирования}
+    
+    \begin{itemize}
+        \item \verb"С++,java,C#" и т.д.: если слева от цифр цисла есть префикс <<\verb"0x">>, то число в шестнадцатеричной системе. \verb"0xAF" - шестнадцатеричное число (равное 175). \verb"0x1h" - ошибка: недопустима цифра \verb"h".
+        
+        \item pascal: если слева от цифр цисла есть префикс <<\verb"$">>, то число в шестнадцатеричной системе. \verb"$AF" - шестнадцатеричное число (равное 175). \verb"$1h" - ошибка: недопустима цифра \verb"h".
+        
+        \item В некоторых ассемблерах после цифр шестнадцатиричного числа пишется латинская буква <<\verb"h">> (hexadecimal): \verb"1beh", \verb"0afh", \verb"0AFh", \verb"0AFH".
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Вспомогательные системы счисления}
+    \framesubtitle{$8,16$ СС}
+
+    \begin{example}[Задача]
+        Дано двоичное число $(1110011.0101101)_2$. Перевести его в системы счисления с основанием $8$ и $16$.
+    \end{example}
+    \begin{proof}<2>[Решение]
+        \[
+            \begin{array}[c]{c}
+                (
+                \underbrace{001}_{1}
+                \underbrace{110}_{6}
+                \underbrace{011}_{3}.
+                \underbrace{010}_{2}
+                \underbrace{110}_{6}
+                \underbrace{100}_{4})_2\equiv(163.264)_8\equiv\\
+                \equiv(
+                \underbrace{0111}_{7}
+                \underbrace{0011}_{3}.
+                \underbrace{0101}_{5}
+                \underbrace{1010}_{A}
+                )_2\equiv(73.5A)_{16}
+            \end{array}
+        \]
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Вспомогательные ($8,16$) системы счисления}
+    
+    \begin{example}[Задача]
+        Дано восьмиричное число $(673245.471)_8$. Перевести его в систему счисления c основанием $16$.
+    \end{example}
+    \begin{proof}<2>[Решение]
+        Переводим в двоичную систему, а из двоичной в шестнадцатеричную:
+        \[
+            \begin{array}[c]{c}
+                (110\ 111\ 011\ 010\ 100\ 101.100\ 111\ 001)_2=\\
+                =(0011\ 0111\ 0110\ 1010\ 0101.1001\ 1100\ 1000)_2=\\
+                =(376A5.9C8)_{16}
+            \end{array}
+        \]
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Вспомогательные ($8,16$) системы счисления}
+
+    \begin{example}[Задача]
+        Дано число $65045.875$. Перевести его в $2$ CC.
+    \end{example}
+    \begin{proof}<2>[Решение]
+        Переводим в шестнадцатеричную систему целую часть:
+        \[
+            \begin{array}[c]{l}
+                65045=4065\cdot 16 + 5,\Rightarrow a_{0}=5, \\
+                4065=254\cdot 16 + 1,\Rightarrow a_{1}=1, \\
+                254=15\cdot 16 + 14,\Rightarrow a_{2}=E, \\
+                15=0\cdot 16 + 15,\Rightarrow a_{3}=F.
+            \end{array}
+        \]
+
+        Дробную часть:
+        \[
+            0.875\cdot 16=14.0,\Rightarrow a_{-1}=E.
+        \]
+
+        В двоичной системе: $(FE15.E)_{16}=(1111111000010101.1110)_2$.
+    \end{proof}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Удобство представления двоичных чисел в 8 и 16 СС}
+    
+    \begin{example}[Компактность уменьшает количество ошибок]
+        \[
+            \begin{array}[c]{c}
+                (11111110101000000001011111001101)_2=\\
+                =(37650013715)_8=\\
+                =(FEA017CD)_{16}
+            \end{array}
+        \]
+        
+        В менее короткой записи числа ошибиться сложнее.
+    \end{example}
+\end{frame}
+
+
+\subsection{Биты, байты, тетрады,\ldots}
+
+\begin{frame}
+    \frametitle{Информатика и 2 СС}
+    
+    \begin{itemize}
+        \item Бит (bit --- binary digit).
+        \item Байт (byte).
+        \item Октет.
+        \item Ниббл, тетрада.
+        \item \alert{Килобайт}?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Война префиксов закончена 19 марта 2005 года!}
+    \framesubtitle{IEEE 1541. 1000 байт --- 1 kB (килобайт), 1024 байт --- 1KiB (кибибайт)}
+    
+    Префиксы для формирования крупных единиц измерения информации
+    \[
+    \begin{tabular}[c]{ll|ll}
+        \hline\hline
+        Множитель          & СИ/SI                  & Множитель        & IEEE 1541 \\
+        \hline\hline
+        $10^3  = 1000^1$   & \emph{kilo} (k) кило   & $2^{10} =1024^1$ & \emph{kibi} (Ki) киби\\
+        $10^6  = 1000^2$   & \emph{mega} (M) мега   & $2^{20} =1024^2$ & \emph{mebi} (Mi) меби \\
+        $10^9  = 1000^3$   & \emph{giga} (G) гига   & $2^{30} =1024^3$ & \emph{gibi} (Gi) гиби\\
+        $10^{12} = 1000^4$ & \emph{tera} (T) тера   & $2^{40} =1024^4$ & \emph{tebi} (Ti) теби\\
+        $10^{15} = 1000^5$ & \emph{peta} (P) пета   & $2^{50} =1024^5$ & \emph{pebi} (Pi) пеби\\
+        $10^{18} = 1000^6$ & \emph{exa} (E) экса    & $2^{60} =1024^6$ & \emph{exbi} (Ei) эксби\\
+        $10^{21} = 1000^7$ & \emph{zetta} (Z) зетта & $2^{70} =1024^7$ & \emph{zebi} (Zi) зеби\\
+        $10^{24} = 1000^8$ & \emph{yotta} (Y) йотта & $2^{80} =1024^8$ & \emph{yobi} (Yi) йоби\\
+        \hline
+    \end{tabular}
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Обсуждение}
+    
+    Как представляются числа в современных компьютерах?
+\end{frame}
+
+
+\appendix
+
+\begin{frame}
+    \frametitle{В заключение}
+    
+    Подробнее о ситемах счисления см. \cite{bib:gorbatov:fodm,bib:sudoplatov:discrmath}.
+\end{frame}
+
+
+\begin{frame}[allowframebreaks]{Библиография}
+    \bibliographystyle{gost780u}
+    \bibliography{./../../bibliobase}
+\end{frame}
+
+\end{document}

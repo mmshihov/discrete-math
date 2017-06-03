@@ -1,0 +1,536 @@
+\input{./../common}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[all]{xy}
+
+%%для рисования графов пакетом xy-pic
+\entrymodifiers={++[o][F-]}
+
+%%для псевдокода алгоритмов (algorithm,algorithmic)
+\renewcommand{\algorithmicrequire}{\textbf{Вход:}}
+\renewcommand{\algorithmicensure}{\textbf{Выход:}}
+\renewcommand{\algorithmiccomment}[1]{// #1}
+\floatname{algorithm}{Псевдокод}
+
+
+\title[Математические основы криптографии]{Вычислительная сложность алгоритмов}
+
+
+\begin{document}
+
+
+\mode<article>{\maketitle\tableofcontents}
+
+
+\frame<presentation>{\titlepage}
+\begin{frame}<presentation>[allowframebreaks]
+    \frametitle{Содержание}
+    
+    \tableofcontents
+\end{frame}
+
+
+\section{Анализ алгоритмов}
+
+
+\subsection{Алгоритм}
+
+
+\begin{frame}
+    \frametitle{Алгоритм}
+    
+    \alert{Алгоритмом}\footnote{См. в \cite{bib:knuth:artOfProgramming2}} называют имеющий \alert{пять} особенностей набор конечного числа правил, задающих последовательность выполнения операций для решения задачи определённого типа.
+    \begin{enumerate}
+        \item \alert{Конечность}. Алгоритм всегда должен заканчиваться после конечного числа шагов. \alert{Метод вычислений}, в отличие от алгоритма, не обладает свойством конечности.
+        
+        \item \alert{Определенность}. Каждый шаг алгоритма должен быть четко определен. \alert{Метод} вычислений, выраженный на языке программирования, называется \alert{программой}.
+        
+        \item \alert{Ввод}. Алгоритм имеет определенное число входных данных.
+        
+        \item \alert{Вывод}. Алгоритм имеет определенное число выходных данных.
+        
+        \item \alert{Эффективность}. Все шаги алгоритма достаточно просты и могут быть выполнены в течение конечного промежутка времени.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Анализ}
+    
+    Анализу подвергаются следующие характеристики:
+    \begin{itemize}
+        \item \alert{время} выполнения алгоритма;
+        \item \alert{объем памяти}, необходимый для выполнения алгоритма.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Тонкости анализа времени выполнения}
+    
+    \begin{itemize}
+        \item Одну и ту же \alert{задачу} можно решить разными \alert{алгоритмами}. 
+        \item Один и тот же \alert{алгоритм} можно выразить разными \alert{программами} (на различных языках программирования).
+        \item Одна и та же \alert{программа} может быть выполнена отличающимися по производительности \alert{компьютерами}.
+    \end{itemize}
+    \uncover<2>{
+        $\Rightarrow$ 
+        \begin{itemize}
+            \item время выполнения не оценивается в секундах! 
+            \item точная оценка не представляет интереса!
+        \end{itemize}
+    }
+\end{frame}
+
+
+\subsection{Классы роста}
+
+
+\begin{frame}
+    \frametitle{Классы роста функций}
+    
+    Допустим, что для алгоритма $A$:
+    \begin{itemize}
+        \item можно оценить размерность входных данных $n\in\mathbb{N}$;
+        \item можно вывести функцию $g:\mathbb{N}\to[0,\infty)$, которая по заданной размерности данных $n$ вычисляет время выполнения алгоритма.
+    \end{itemize}
+    
+    Тогда для константы $c\geq 0$ можно выделить классы роста:
+    \begin{enumerate}
+        \item $\Omega(f(n))$. Если $g\in\Omega(f)$, то $g$ растёт \alert{по крайней мере так же быстро} как $f(n)$. Т.е. $(\forall n>n_0) g(n)>c\cdot f(n)$.
+        
+        \item $O(f(n))$. Если $g\in O(f)$, то $g$ растёт \alert{не быстрее} $f(n)$. Т.е. $(\forall n\geq n_0) g(n)\leq c\cdot f(n)$.
+
+        \item $\Theta(f(n))$. Если $g\in \Theta(f)$, то $g$ растёт \alert{той же скоростью} что и $f(n)$. Т.е. $\Theta(f(n))=\Omega(f(n))\cap O(f(n))$.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{$O(f(n))$}
+    
+    \[
+        g\in O(f),\text{ если } \lim_{n\to\infty}\frac{g(n)}{f(n)}=c
+    \]
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Рост некоторых $f(n)$}
+    
+    \begin{center}
+        \resizebox{\textwidth}{!}{
+            \begin{tabular}{r|r|rrrrr}
+                \hline\hline
+                $\log_2n$   & $n$ & $n\log_2n$ & $n^2$ & $n^3$ & $2^n$\\ \hline\hline
+                0.00        &   1 &    0.00 &     1 &       1 &                                 2\\
+                1.00        &   2 &    2.00 &     4 &       8 &                                 4\\
+                2.00        &   4 &    8.00 &    16 &      64 &                                16\\
+                2.32        &   5 &   11.61 &    25 &     125 &                                32\\
+                3.32        &  10 &   33.22 &   100 &    1000 &                              1024\\
+                4.32        &  20 &   86.44 &   400 &    8000 &                           1048576\\
+                5.32        &  40 &  212.88 &  1600 &   64000 &                     1099511627776\\
+                5.91        &  60 &  354.41 &  3600 &  216000 &               1152921504606846976\\
+                6.32        &  80 &  505.75 &  6400 &  512000 &         1208925819614629174706176\\
+                6.64        & 100 &  664.39 & 10000 & 1000000 &   1267650600228229401496703205376\\
+                \hline
+            \end{tabular} 
+        }
+    \end{center}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Стена из времени}
+    
+    \begin{example}
+        Если обработка на компьютере массива входных данных размерности $n=1$ алгоритмом с $g(n)=n^2$ составляет $10^{-9}$ с. (наносекунду), то обработка массива из $100$ элементов займет $10^{-3}$ с. (милисекунду). 
+    \end{example}
+    
+    \begin{equation}
+        P(n)=a_k\cdot n^k + a_{k-1}\cdot n^{k-1} + \cdots + a_1\cdot n + a_0, a_k\neq 0.
+        \label{eq:alg:polinom}
+    \end{equation}
+    
+    \begin{example}
+        Но если для обработки массива используется алгоритм $g(n)=2^n$, и массив из одного элемента обрабатывается также за $10^{-9}$ с., то $100$ элементный массив будет обработан приблизительно за $20000$ миллиардов лет.    
+    \end{example}
+\end{frame}
+
+\begin{frame}
+    \frametitle{$O(n)$. Соглашения}
+    
+    \begin{itemize}
+        \item Быстрорастущие функции доминируют над функциями с более медленным ростом. Поэтому, если $g(n)$ представляет собой сумму двух или нескольких таких функций, то часто отбрасываются все функции, кроме растущих быстрее всего. Например, $(n^2+\log_2n)\in O(n^2)$
+        
+        \item Если функция $g(n)=c\cdot f(n)$, то можно отбросить $c$: $g\in O(f)$. Например, для полиномов (см. формулу \eqref{eq:alg:polinom}) справедливо $P(n)\in O(n^k)$.
+    \end{itemize}
+    
+    Некоторые функции $f$, упорядоченные по возрастанию скорости:$f(n)=1$, $f(n)=\log_2n$, $f(n)=n$, $f(n)=n\log_2n$, $f(n)=n^2$, $f(n)=n^2\log_2n$, $f(n)=n^3$, \ldots, $f(n)=n^k$, \ldots, $f(n)=2^n$, $f(n)=n!$, $f(n)=n^n$, \ldots.
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \resizebox{\textwidth}{!}{\emph{Тренируемся:}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{$f(n)$}
+        \begin{algorithmic}[1]
+            \STATE{$i\gets 1$}
+            \WHILE{$i\leq n$}
+                \STATE{$O(1)$}
+                \STATE{$i\gets i + 2$}
+            \ENDWHILE
+            \STATE{$f\gets i + O(n^2)$}
+            \RETURN{$f$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{$f(n)$}
+        \begin{algorithmic}[1]
+            \STATE{$i\gets f\gets 1$}
+            \WHILE{$i\leq n$}
+                \STATE{$j\gets 1$}
+                \WHILE{$j\leq n$}
+                    \STATE{$O(1)$}
+                    \STATE{$j\gets j + 1$}
+                    \STATE{$f\gets f + 1$}
+                \ENDWHILE
+                \STATE{$i\gets i + 1$}
+            \ENDWHILE
+            \RETURN{$f$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{$f(n)$}
+        \begin{algorithmic}[1]
+            \STATE{$i\gets f\gets 1$}
+            \WHILE{$i\leq n$}
+                \STATE{$j\gets 1$}
+                \WHILE{$j\leq i$}
+                    \STATE{$O(1)$}
+                    \STATE{$j\gets j + 1$}
+                    \STATE{$f\gets f + 1$}
+                \ENDWHILE
+                \STATE{$i\gets i + 1$}
+            \ENDWHILE
+            \RETURN{$f$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{$f(n)$}
+        \begin{algorithmic}[1]
+            \STATE{$i\gets f\gets 1$}
+            \WHILE{$i\leq n$}
+                \STATE{$f\gets f + O(i)$}
+                \STATE{$i\gets i + 1$}
+            \ENDWHILE
+            \RETURN{$f$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{$f(n)$}
+        \begin{algorithmic}[1]
+            \STATE{$i\gets f\gets 1$}
+            \WHILE{$i\leq n$}
+                \STATE{$f\gets f + O(n)$}
+                \STATE{$i\gets 2\cdot i$}
+            \ENDWHILE
+            \RETURN{$f$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{$f(n)$}
+        \begin{algorithmic}[1]
+            \STATE{$i\gets j\gets f\gets 1$}
+            \WHILE{$i\leq n$}
+                \STATE{$l\gets 1$}
+                \WHILE{$l\leq j$}
+                    \STATE{$f\gets f + O(1)$}
+                    \STATE{$l\gets l+1$}
+                    \STATE{$f\gets f+1$}
+                \ENDWHILE
+                \STATE{$i\gets i+1$}
+                \STATE{$j\gets j\cdot 2$}
+            \ENDWHILE
+            \RETURN{$f$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+
+\section{Пример вычислительной эффективности}
+
+
+\subsection{Числа Фибоначчи}
+
+\begin{frame}
+    \frametitle{Определение}
+    
+    Положим, что нулевое число последовательности $0$, первое --- $1$, а последующие есть сумма двух предыдущих:
+    \begin{equation}\label{eq:fib:main}
+        F_n = 
+        \begin{cases}
+            0, & \textit{при $n=0$},\\
+            1, & \textit{при $n=1$},\\
+            F_{n-1} + F_{n-2}, & \textit{при $n>1$}.
+        \end{cases}
+    \end{equation}
+    
+    Несколько значений:
+    \begin{center}
+        \begin{tabular}{r|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+            \hline
+            $n$      & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7  & 8  & 9  & 10 & 11 & 12 & \ldots\\
+            \hline
+            $F_n$ & 0 & 1 & 1 & 2 & 3 & 5 & 8 & 13 & 21 & 34 & 55 & 89 & 144   & \ldots\\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{frame}
+
+
+\subsection{Вычисление $n$-го числа Фибоначчи}
+
+\begin{frame}
+    \begin{center}
+        \resizebox{\textwidth}{!}{\emph{По определению:}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{fib($n$)}
+        \begin{algorithmic}[1]
+            \REQUIRE{$n\in\mathbb{N}$ --- номер числа Фибоначчи}
+            \ENSURE{$n$-е число Фибоначчи}
+            
+            \IF{$n=0$}
+                \RETURN{$0$}
+            \ENDIF
+            \IF{$n=1$}
+                \RETURN{$1$}
+            \ENDIF
+            \RETURN{fib($n-1$) + fib($n-2$)}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \[
+        {\xymatrix{
+            *{}
+                &*{}
+                    &*{}
+                        &*{}
+                            &F_4 \ar@{-}[d]  \ar@{-}[lld]
+                                \\
+            *{}
+                &*{}
+                    &F_3 \ar@{-}[d]  \ar@{-}[ld]
+                        &*{}
+                            &F_2 \ar@{-}[d]  \ar@{-}[ld]
+                                \\
+            *{}
+                &F_2 \ar@{-}[d]  \ar@{-}[ld]
+                    &F_1
+                        &F_1
+                            &F_0
+                                \\
+            F_1
+                &F_0
+                    &*{}
+                        &*{}
+                            &*{}
+        }}
+    \]    
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \resizebox{\textwidth}{!}{\emph{Итеративно:}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{В рекурсивной форме}
+    
+    \begin{algorithm}[H]
+        \caption{fib($n$)}
+        \begin{algorithmic}[1]
+            \REQUIRE{$n\in\mathbb{N}$ --- номер числа Фибоначчи}
+            \ENSURE{$n$-е число Фибоначчи}
+            
+            \RETURN{fibIter($0$, $n$, $0$, $1$)}
+        \end{algorithmic}
+    \end{algorithm}
+    \begin{algorithm}[H]
+        \caption{fibIter($i$, $n$, $F_i$, $F_{i+1}$) --- аналог цикла}
+        \begin{algorithmic}[1]
+            \REQUIRE{$i$ --- текущая итерация; $n$ --- номер искомого числа; $F_i$ --- значение $i$-го числа Фибоначчи}
+            \ENSURE{$n$-е число Фибоначчи}
+            
+            \IF{$i=n$}
+                \RETURN{$F_i$}
+            \ENDIF
+            \RETURN{fibIter($i+1$, $n$, $F_{i+1}$, $F_{i} + F_{i+1}$)}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \frametitle{В форме цикла}
+    
+    \begin{algorithm}[H]
+        \caption{fib($n$)}
+        \begin{algorithmic}[1]
+            \REQUIRE{$n\in\mathbb{N}$ --- номер числа Фибоначчи}
+            \ENSURE{$n$-е число Фибоначчи}
+            
+            \STATE{$i\gets 0$}
+            \STATE{$F_{i}\gets 0$}
+            \STATE{$F_{i+1}\gets 1$}
+            \WHILE{$i<n$}
+                \STATE{$t\gets F_{i+1}$}
+                \STATE{$F_{i+1}\gets F_{i+1} + F_{i}$}
+                \STATE{$F_{i}\gets t$}
+            \ENDWHILE
+            \RETURN{$F_{i}$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \resizebox{\textwidth}{!}{\emph{Быстрый алгоритм:}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    Выразим несколько $F_{n+k}$ через $F_{n}$ и $F_{n-1}$:
+    \[
+        \begin{split}
+            F_{n+0} = 1\cdot F_{n} + 0\cdot F_{n-1}\\
+            F_{n+1} = 1\cdot F_{n} + 1\cdot F_{n-1}\\
+            F_{n+2} = 2\cdot F_{n} + 1\cdot F_{n-1}\\
+            F_{n+3} = 3\cdot F_{n} + 2\cdot F_{n-1}\\
+            F_{n+4} = 5\cdot F_{n} + 3\cdot F_{n-1}\\
+            F_{n+4} = 8\cdot F_{n} + 5\cdot F_{n-1}\\
+            \ldots\\
+        \end{split}
+    \]
+    
+    Видно (по индукции легко доказать), что 
+    \begin{equation}\label{eq:fib:nplusi}
+        F_{n+i} = F_{i+1}\cdot F_{n} + F_{i}\cdot F_{n-1}.
+    \end{equation}
+\end{frame}
+
+\begin{frame}
+    Тогда, используя \eqref{eq:fib:nplusi}:
+    \begin{equation}\label{eq:fib:odd}
+        \begin{split}
+            F_{2n-1} = F_{n + (n-1)} = F_{n}\cdot F_{n} + F_{n-1}\cdot F_{n-1} = \\
+            = F_{n}^2 + F_{n-1}^2.
+        \end{split}
+    \end{equation}
+
+    И:
+    \begin{equation}\label{eq:fib:even}
+        \begin{split}
+            F_{2n} = F_{n + n} = F_{n+1}\cdot F_{n} + F_{n}\cdot F_{n-1} = \\
+            = (F_{n} + F_{n-1})\cdot F_{n} + F_{n}\cdot F_{n-1} = \\
+            = F_{n}\cdot F_{n} + 2\cdot F_{n}\cdot F_{n-1} = \\
+            = F_{n}^2 + 2\cdot F_{n}\cdot F_{n-1}.
+        \end{split}
+    \end{equation}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{fib($n$)}
+        \begin{algorithmic}[1]
+            \REQUIRE{$n\in\mathbb{N}$ --- номер числа Фибоначчи}
+            \ENSURE{$n$-е число Фибоначчи}
+            
+            \IF{$n=0$}
+                \RETURN{$0$}
+            \ENDIF
+            \STATE{$\langle F_n, F_{n-1}\rangle \gets$ fibFast($n$)}
+            \RETURN{$F_n$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \begin{algorithm}[H]
+        \caption{fibFast($n$)}
+        \begin{algorithmic}[1]
+            \ENSURE{$\langle F_n, F_{n-1}\rangle$ --- пара чисел Фибоначчи: $n$-е и $(n-1)$-е}
+            
+            \IF{$n=1$}
+                \RETURN{$\langle 1, 0\rangle$}
+            \ENDIF
+            \IF{$n\equiv 0\pmod{2}$}
+                \STATE{$m\gets n\div{2}$}  \COMMENT{Cокращаем вдвое. $n=2m$}
+                \STATE{$\langle F_m, F_{m-1}\rangle$ $\gets$ fibFast($m$)} 
+                \RETURN{$\langle F_{m}^2 + 2\cdot F_{m}\cdot F_{m-1}, F_{m}^2 + F_{m-1}^2\rangle$}\COMMENT{Формулы \eqref{eq:fib:even},\eqref{eq:fib:odd}}
+            \ELSE
+                \STATE{$m\gets (n-1)\div{2}$} \COMMENT{Cокращаем вдвое: $(n-1)=2m, (n-2)=2m-1$}
+                \STATE{$\langle F_m, F_{m-1}\rangle$ $\gets$ fibFast($m$)} 
+                
+                \STATE{$F_{n-1} \gets F_{m}^2 + 2\cdot F_{m}\cdot F_{m-1}$}  \COMMENT{Формула \eqref{eq:fib:even}}
+                \STATE{$F_{n-2} \gets F_{m}^2 + F_{m-1}^2$}  \COMMENT{Формула \eqref{eq:fib:odd}}
+                \RETURN{$\langle F_{n-1}+F_{n-2}, F_{n-1}\rangle$} \COMMENT{Формула \eqref{eq:fib:main}}
+            \ENDIF
+        \end{algorithmic}
+    \end{algorithm}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        \resizebox{\textwidth}{!}{\emph{Формула Бине:}}
+    \end{center}
+    \[
+        F_n = 
+        \frac{
+            \left(\frac{1+\sqrt{5}}{2}\right)^n - \left(\frac{1-\sqrt{5}}{2}\right)^n
+        }{
+            \sqrt{5}
+        }
+    \]
+\end{frame}
+
+
+\appendix
+
+
+\begin{frame}
+    \frametitle{Источники}
+    
+    Определение алгоритма можно найти в первом томе классического труда \cite{bib:knuth:artOfProgramming1}, практика анализа алгоритмов (в контексте изучения конкретных алгоритмов для решения отдельных типов задач) представлена во всех томах \cite{bib:knuth:artOfProgramming1, bib:knuth:artOfProgramming2, bib:knuth:artOfProgramming3}. Целиком анализу алгоритмов посвящены книги \cite{bib:mcconnel:alghorithmAnalysis, bib:miller:secParAlghorithm}.
+\end{frame}
+
+
+\begin{frame}[allowframebreaks]{Библиография}
+    \bibliographystyle{gost780u}
+    \bibliography{./../../bibliobase}
+\end{frame}
+
+\end{document}

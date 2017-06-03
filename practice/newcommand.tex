@@ -1,0 +1,26 @@
+%определённые мной команды логической разметки
+\newcommand{\Signs}[2]{\fbox{{\small{\underbar{#1}}}{#2}}}
+\newcommand{\Sign}[1]{\fbox{#1}}
+\newcommand{\DC}[1]{\text{ДК}(#1)}
+\newcommand{\OC}[1]{\text{ОК}(#1)}
+
+\newboolean{IsNeedAnswer}
+\setboolean{IsNeedAnswer}{false} %true/false
+
+\newcommand{\ProofAnswer}[1]{
+    \ifthenelse{\boolean{IsNeedAnswer}}{
+        \begin{proof}[Ответ]
+            #1
+        \end{proof}
+    }{}
+}
+
+\newcommand{\LabeledAnswer}[1]{
+    \ifthenelse{\boolean{IsNeedAnswer}}{
+        \emph{Отв.}: #1 \qed
+    }{}
+}
+
+\newcommand{\PlainAnswer}[1]{
+    \ifthenelse{\boolean{IsNeedAnswer}}{#1}{}
+}

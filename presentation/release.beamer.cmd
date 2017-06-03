@@ -1,0 +1,22 @@
+rem call compile.cmd
+
+copy   ch00\main.beamer.pdf ..\..\release\00-PSS.pdf
+copy ch00.1\main.beamer.pdf ..\..\release\01-PSS-CALCULATIONS.pdf
+copy   ch12\main.beamer.pdf ..\..\release\02-LOGIC.pdf
+copy ch12.1\main.beamer.pdf ..\..\release\03-LOGIC-MIN8N.pdf
+copy   ch01\main.beamer.pdf ..\..\release\04-SET.pdf
+copy   ch04\main.beamer.pdf ..\..\release\05-POWER-OF-SET.pdf
+copy   ch02\main.beamer.pdf ..\..\release\06-REGULAR-SET.pdf
+copy   ch07\main.beamer.pdf ..\..\release\07-FUZZY-SET.pdf
+copy   ch03\main.beamer.pdf ..\..\release\08-RELATION.pdf
+copy   ch05\main.beamer.pdf ..\..\release\09-RELATION-BIN.pdf
+copy   ch06\main.beamer.pdf ..\..\release\10-RELATION-ALGEBRA.pdf
+copy   ch08\main.beamer.pdf ..\..\release\11-CODING.pdf
+copy   ch09\main.beamer.pdf ..\..\release\12-GRAPH.pdf
+copy ch09.1\main.beamer.pdf ..\..\release\13-GRAPH-CONSIST.pdf
+copy ch09.2\main.beamer.pdf ..\..\release\14-GRAPH-TREES-PATHS.pdf
+copy ch09.3\main.beamer.pdf ..\..\release\15-GRAPH-ISOMORPHING.pdf
+copy ch09.4\main.beamer.pdf ..\..\release\16-GRAPH-CYCLE.pdf
+copy   ch10\main.beamer.pdf ..\..\release\17-INDUCTION-RECURSION.pdf
+copy ch10.1\main.beamer.pdf ..\..\release\18-RECURSION-ALGORITHM.pdf
+copy   ch11\main.beamer.pdf ..\..\release\19-ALGORITHM-COMPLEXITY.pdf
